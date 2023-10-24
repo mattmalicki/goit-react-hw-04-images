@@ -20,10 +20,10 @@ export const App = () => {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState();
   const [currentQuery, setCurrentQuerry] = useState('');
   const [totalHits, setTotalHits] = useState(0);
-  const [modal, setModal] = useState({ open: false, src: '', tags: [] });
+  const [modal, setModal] = useState({ open: false, src: '', tags: '' });
 
   const pageUpdate = () => {
     setCurrentPage(currentPage + 1);
@@ -32,6 +32,7 @@ export const App = () => {
 
   const handleLoadMore = () => {
     pageUpdate();
+    getImages();
   };
 
   const handleSubmit = event => {
@@ -41,6 +42,7 @@ export const App = () => {
     pageUpdate();
     setCurrentQuerry(form.querry.value);
     setImages([]);
+    getImages();
   };
 
   const handleOpenModal = event => {
@@ -49,7 +51,8 @@ export const App = () => {
     }
 
     const image = event.target;
-    setModal({ open: true, src: image.src, tags: image.alt });
+    console.log(image);
+    setModal({ open: true, src: image.dataset.largeImage, tags: image.alt });
   };
 
   const handleCloseModal = event => {
@@ -70,15 +73,15 @@ export const App = () => {
           page: currentPage,
         },
       });
-      const images = await respond.data;
-      if (images.hits.length === 0) {
+      const apiImages = await respond.data;
+      if (apiImages.hits.length === 0) {
         new Notify.failure('Sorry, no images found', { clickToClose: true });
         setCurrentPage(0);
         return;
       }
       setTimeout(() => {
-        setImages(images.concat(images.hits));
-        setTotalHits(images.totalHits);
+        setImages([...images, ...apiImages.hits]);
+        setTotalHits(apiImages.totalHits);
       }, 1000);
     } catch (error) {
       setError(error);
@@ -87,7 +90,10 @@ export const App = () => {
     }
   };
 
-  useEffect(() => {}, [images, modal, currentPage, currentQuery]);
+  useEffect(() => {}, [currentPage]);
+
+  useEffect(() => {}, [images]);
+  useEffect(() => {}, [modal]);
   return (
     <div className={styles.App}>
       <Searchbar onSubmit={handleSubmit} />
@@ -97,11 +103,9 @@ export const App = () => {
       )}
       {isLoading && <Loader />}
       {images.length !== 0 && images.length !== totalHits && (
-        <ButtonLoader handleClick={handleLoadMore} />
+        <ButtonLoader onClick={handleLoadMore} />
       )}
-      {modal.open && (
-        <Modal src={modal.src} alt={modal.tags} close={handleCloseModal} />
-      )}
+      {modal.open && <Modal modal={modal} handleClose={handleCloseModal} />}
     </div>
   );
 };
