@@ -90,7 +90,7 @@ export const App = () => {
   useEffect(() => {}, [images, modal, currentPage, currentQuery]);
   return (
     <div className={styles.App}>
-      <Searchbar submit={handleSubmit} />
+      <Searchbar onSubmit={handleSubmit} />
       {error && <p>Something went wrong: {error.message}</p>}
       {images.length > 0 && (
         <ImageGallery images={images} openModal={handleOpenModal} />
