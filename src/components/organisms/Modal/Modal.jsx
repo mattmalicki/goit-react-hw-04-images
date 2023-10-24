@@ -2,7 +2,7 @@ import { ImageModal } from 'components/atoms/ImageModal/ImageModal';
 import { useEffect } from 'react';
 import styles from './Modal.module.css';
 
-export const Modal = (modal, handleClose) => {
+export const Modal = ({ src, alt, handleClose }) => {
   useEffect(() => {
     window.addEventListener('keydown', handleClose);
     return () => {
@@ -16,8 +16,7 @@ export const Modal = (modal, handleClose) => {
       onClick={handleClose}
       onKeyDown={handleClose}
     >
-      {console.log(modal)}
-      <ImageModal src={modal.src} alt={modal.alt} />
+      <ImageModal src={src} alt={alt} />
     </div>
   );
 };
