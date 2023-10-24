@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Notify } from 'notiflix';
 
 import { Modal } from 'components/organisms/Modal/Modal';
 import { Searchbar } from 'components/organisms/Searchbar/Searchbar';
@@ -11,11 +12,11 @@ import { useEffect, useState } from 'react';
 import styles from './App.module.css';
 
 export const App = () => {
-  API_KEY = '38855458-8cac518777b782fa6e9540f58';
-  API_URL = 'https://pixabay.com/api/';
-  API_PER_PAGE = 12;
-  API_IMAGE_TYPE = 'photo';
-  API_ORIENTATION = 'horizontal';
+  const API_KEY = '38855458-8cac518777b782fa6e9540f58';
+  const API_URL = 'https://pixabay.com/api/';
+  const API_PER_PAGE = 12;
+  const API_IMAGE_TYPE = 'photo';
+  const API_ORIENTATION = 'horizontal';
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -57,7 +58,7 @@ export const App = () => {
     }
   };
 
-  getImages = async () => {
+  const getImages = async () => {
     try {
       const respond = await axios.get(API_URL, {
         params: {
@@ -72,7 +73,7 @@ export const App = () => {
       const images = await respond.data;
       if (images.hits.length === 0) {
         new Notify.failure('Sorry, no images found', { clickToClose: true });
-        this.setState({ currentPage: 0 });
+        setCurrentPage(0);
         return;
       }
       setTimeout(() => {
