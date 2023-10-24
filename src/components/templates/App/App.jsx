@@ -20,29 +20,24 @@ export const App = () => {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [currentPage, setCurrentPage] = useState();
+  const [currentPage, setCurrentPage] = useState(0);
   const [currentQuery, setCurrentQuerry] = useState('');
   const [totalHits, setTotalHits] = useState(0);
   const [modal, setModal] = useState({ open: false, src: '', tags: '' });
 
-  const pageUpdate = () => {
+  const handleLoadMore = () => {
     setCurrentPage(currentPage + 1);
     setIsLoading(true);
-  };
-
-  const handleLoadMore = () => {
-    pageUpdate();
-    getImages();
   };
 
   const handleSubmit = event => {
     event.preventDefault();
 
     const form = event.currentTarget;
-    pageUpdate();
+    setCurrentPage(1);
+    setIsLoading(true);
     setCurrentQuerry(form.querry.value);
     setImages([]);
-    getImages();
   };
 
   const handleOpenModal = event => {
@@ -51,7 +46,6 @@ export const App = () => {
     }
 
     const image = event.target;
-    console.log(image);
     setModal({ open: true, src: image.dataset.largeImage, tags: image.alt });
   };
 
@@ -63,6 +57,7 @@ export const App = () => {
 
   const getImages = async () => {
     try {
+      console.log('Page: ', currentPage);
       const respond = await axios.get(API_URL, {
         params: {
           key: API_KEY,
@@ -79,8 +74,12 @@ export const App = () => {
         setCurrentPage(0);
         return;
       }
+      console.log('Images in state: ', images);
+      console.log('Images in api: ', apiImages.hits);
+      console.log('Added images with concat: ', images.concat(apiImages.hits));
+      const addedImages = images.concat(apiImages.hits);
       setTimeout(() => {
-        setImages([...images, ...apiImages.hits]);
+        setImages(addedImages);
         setTotalHits(apiImages.totalHits);
       }, 1000);
     } catch (error) {
@@ -90,8 +89,9 @@ export const App = () => {
     }
   };
 
-  useEffect(() => {}, [currentPage]);
-
+  useEffect(() => {
+    currentPage !== 0 && getImages();
+  }, [currentPage]);
   useEffect(() => {}, [images]);
   useEffect(() => {}, [modal]);
   return (
