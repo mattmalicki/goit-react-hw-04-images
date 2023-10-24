@@ -8,7 +8,7 @@ export const Modal = (modal, handleClose) => {
     return () => {
       window.removeEventListener('keydown', handleClose);
     };
-  }, []);
+  }, [handleClose]);
   return (
     <div
       id="modal"
