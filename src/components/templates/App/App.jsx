@@ -57,7 +57,7 @@ export const App = () => {
 
   const handleCloseModal = event => {
     if (event.target.id === 'modal' || event.key === 'Escape') {
-      setModal({ open: false, src: '', tags: [] });
+      setModal({ open: false, src: '', tags: '' });
     }
   };
 
@@ -105,7 +105,9 @@ export const App = () => {
       {images.length !== 0 && images.length !== totalHits && (
         <ButtonLoader onClick={handleLoadMore} />
       )}
-      {modal.open && <Modal modal={modal} handleClose={handleCloseModal} />}
+      {modal.open && (
+        <Modal src={modal.src} alt={modal.alt} handleClose={handleCloseModal} />
+      )}
     </div>
   );
 };
