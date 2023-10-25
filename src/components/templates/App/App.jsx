@@ -17,7 +17,6 @@ export const App = () => {
   const API_PER_PAGE = 12;
   const API_IMAGE_TYPE = 'photo';
   const API_ORIENTATION = 'horizontal';
-  const test = true;
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -88,8 +87,8 @@ export const App = () => {
 
   useEffect(() => {
     currentPage !== 0 && getImages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
-  useEffect(() => {}, [images]);
   useEffect(() => {}, [modal]);
   return (
     <div className={styles.App}>
