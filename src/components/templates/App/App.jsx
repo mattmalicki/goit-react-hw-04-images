@@ -91,7 +91,7 @@ export const App = () => {
 
   useEffect(() => {
     currentPage !== 0 && getImages();
-  }, [currentPage]);
+  }, [currentPage, getImages]);
   useEffect(() => {}, [images]);
   useEffect(() => {}, [modal]);
   return (
