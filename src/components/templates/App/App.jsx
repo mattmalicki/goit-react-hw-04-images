@@ -74,10 +74,8 @@ export const App = () => {
         return;
       }
       const addedImages = images.concat(apiImages.hits);
-      setTimeout(() => {
-        setImages(addedImages);
-        setTotalHits(apiImages.totalHits);
-      }, 1000);
+      setImages(addedImages);
+      setTotalHits(apiImages.totalHits);
     } catch (error) {
       setError(error);
     } finally {
