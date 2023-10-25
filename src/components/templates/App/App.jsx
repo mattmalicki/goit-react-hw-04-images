@@ -32,7 +32,6 @@ export const App = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-
     const form = event.currentTarget;
     setCurrentPage(1);
     setIsLoading(true);
@@ -76,17 +75,19 @@ export const App = () => {
       const addedImages = images.concat(apiImages.hits);
       setImages(addedImages);
       setTotalHits(apiImages.totalHits);
+      console.log('Try done');
     } catch (error) {
       setError(error);
     } finally {
       setIsLoading(false);
+      console.log('Finally done');
     }
   };
 
   useEffect(() => {
-    currentPage !== 0 && getImages();
+    isLoading && getImages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [isLoading]);
   useEffect(() => {}, [modal]);
   return (
     <div className={styles.App}>
