@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { ImageGalleryItem } from 'components/molecules/ImageGalleryItem/ImageGalleryItem';
 import styles from './ImageGallery.module.css';
 
@@ -16,4 +17,16 @@ export const ImageGallery = ({ images, openModal }) => {
       })}
     </ul>
   );
+};
+
+ImageGallery.propTypes = {
+  openModal: PropTypes.func,
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      webformatURL: PropTypes.string,
+      largeImageURL: PropTypes.string,
+      tags: PropTypes.string,
+    })
+  ),
 };

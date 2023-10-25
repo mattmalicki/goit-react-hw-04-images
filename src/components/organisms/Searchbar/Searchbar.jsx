@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { ButtonSearch } from 'components/molecules/ButtonSearch/ButtonSearch';
 import { InputSearch } from 'components/atoms/InputSearch/InputSearch';
 import { FormSearch } from '../FormSearch/FormSearch';
@@ -12,4 +13,8 @@ export const Searchbar = ({ onSubmit }) => {
       </FormSearch>
     </header>
   );
+};
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func,
 };

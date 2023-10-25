@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styles from './FormSearch.module.css';
 
 export const FormSearch = ({ onSubmit, children }) => {
@@ -6,4 +7,8 @@ export const FormSearch = ({ onSubmit, children }) => {
       {children}
     </form>
   );
+};
+
+FormSearch.propTypes = {
+  onSubmit: PropTypes.func,
 };

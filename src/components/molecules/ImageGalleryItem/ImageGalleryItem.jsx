@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styles from './ImageGalleryItem.module.css';
 
 export const ImageGalleryItem = ({ smallSrc, largeSrc, tags }) => {
@@ -11,4 +12,10 @@ export const ImageGalleryItem = ({ smallSrc, largeSrc, tags }) => {
       />
     </li>
   );
+};
+
+ImageGalleryItem.propTypes = {
+  smallSrc: PropTypes.string,
+  largeSrc: PropTypes.string,
+  tags: PropTypes.string,
 };

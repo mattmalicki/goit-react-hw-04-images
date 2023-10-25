@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { ImageModal } from 'components/atoms/ImageModal/ImageModal';
 import { useEffect } from 'react';
 import styles from './Modal.module.css';
@@ -19,4 +20,10 @@ export const Modal = ({ src, alt, handleClose }) => {
       <ImageModal src={src} alt={alt} />
     </div>
   );
+};
+
+Modal.propTypes = {
+  src: PropTypes.string,
+  alt: PropTypes.string,
+  handleClose: PropTypes.func,
 };

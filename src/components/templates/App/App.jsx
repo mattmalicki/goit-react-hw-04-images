@@ -57,7 +57,6 @@ export const App = () => {
 
   const getImages = async () => {
     try {
-      console.log('Page: ', currentPage);
       const respond = await axios.get(API_URL, {
         params: {
           key: API_KEY,
@@ -74,9 +73,6 @@ export const App = () => {
         setCurrentPage(0);
         return;
       }
-      console.log('Images in state: ', images);
-      console.log('Images in api: ', apiImages.hits);
-      console.log('Added images with concat: ', images.concat(apiImages.hits));
       const addedImages = images.concat(apiImages.hits);
       setTimeout(() => {
         setImages(addedImages);
@@ -91,7 +87,7 @@ export const App = () => {
 
   useEffect(() => {
     currentPage !== 0 && getImages();
-  }, [currentPage, getImages]);
+  }, [currentPage]);
   useEffect(() => {}, [images]);
   useEffect(() => {}, [modal]);
   return (
