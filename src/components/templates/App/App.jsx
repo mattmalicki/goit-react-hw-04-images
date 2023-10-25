@@ -64,7 +64,7 @@ export const App = () => {
           orientation: API_ORIENTATION,
           image_type: API_IMAGE_TYPE,
           per_page: API_PER_PAGE,
-          q: currentQuery,
+          q: currentQuery.split(' ').join('+'),
           page: currentPage,
         },
       });
