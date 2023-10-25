@@ -21,7 +21,7 @@ export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [currentQuery, setCurrentQuerry] = useState('');
+  const [currentQuery, setCurrentQuerry] = useState('popular');
   const [totalHits, setTotalHits] = useState(0);
   const [modal, setModal] = useState({ open: false, src: '', tags: '' });
 
@@ -35,7 +35,9 @@ export const App = () => {
     const form = event.currentTarget;
     setCurrentPage(1);
     setIsLoading(true);
-    setCurrentQuerry(form.querry.value);
+    form.querry.value === ''
+      ? setCurrentQuerry('popular')
+      : setCurrentQuerry(form.querry.value);
     setImages([]);
   };
 
