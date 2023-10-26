@@ -7,7 +7,7 @@ import { ImageGallery } from 'components/organisms/ImageGallery/ImageGallery';
 import { Loader } from 'components/atoms/Loader/Loader';
 import { ButtonLoader } from 'components/atoms/ButtonLoader/ButtonLoader';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import styles from './App.module.css';
 
@@ -20,25 +20,26 @@ export const App = () => {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [currentPage, setCurrentPage] = useState(0);
-  const [currentQuery, setCurrentQuerry] = useState('popular');
-  const [totalHits, setTotalHits] = useState(0);
+  let currentPage = useRef(1);
+  let currentQuery = useRef('popular');
+  let totalHits = useRef(0);
   const [modal, setModal] = useState({ open: false, src: '', tags: '' });
 
   const handleLoadMore = () => {
-    setCurrentPage(currentPage + 1);
+    currentPage.current++;
+    console.log(currentPage.current);
     setIsLoading(true);
   };
 
   const handleSubmit = event => {
     event.preventDefault();
     const form = event.currentTarget;
-    setCurrentPage(1);
-    setIsLoading(true);
+    currentPage.current = 1;
     form.querry.value === ''
-      ? setCurrentQuerry('popular')
-      : setCurrentQuerry(form.querry.value);
+      ? (currentQuery.current = 'popular')
+      : (currentQuery.current = form.querry.value);
     setImages([]);
+    setIsLoading(true);
   };
 
   const handleOpenModal = event => {
@@ -64,25 +65,23 @@ export const App = () => {
           orientation: API_ORIENTATION,
           image_type: API_IMAGE_TYPE,
           per_page: API_PER_PAGE,
-          q: currentQuery.split(' ').join('+'),
-          page: currentPage,
+          q: currentQuery.current.split(' ').join('+'),
+          page: currentPage.current,
         },
       });
       const apiImages = await respond.data;
       if (apiImages.hits.length === 0) {
         new Notify.failure('Sorry, no images found', { clickToClose: true });
-        setCurrentPage(0);
+        currentPage.current = 1;
         return;
       }
       const addedImages = images.concat(apiImages.hits);
       setImages(addedImages);
-      setTotalHits(apiImages.totalHits);
-      console.log('Try done');
+      totalHits.current = apiImages.totalHits;
     } catch (error) {
       setError(error);
     } finally {
       setIsLoading(false);
-      console.log('Finally done');
     }
   };
 
@@ -90,7 +89,6 @@ export const App = () => {
     isLoading && getImages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
-  useEffect(() => {}, [modal]);
   return (
     <div className={styles.App}>
       <Searchbar onSubmit={handleSubmit} />
@@ -99,7 +97,7 @@ export const App = () => {
         <ImageGallery images={images} openModal={handleOpenModal} />
       )}
       {isLoading && <Loader />}
-      {images.length !== 0 && images.length !== totalHits && (
+      {images.length !== 0 && images.length !== totalHits.current && (
         <ButtonLoader onClick={handleLoadMore} />
       )}
       {modal.open && (
