@@ -27,7 +27,6 @@ export const App = () => {
 
   const handleLoadMore = () => {
     currentPage.current++;
-    console.log(currentPage.current);
     setIsLoading(true);
   };
 
